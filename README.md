@@ -8,3 +8,5 @@
     - Juan: XGBoost
     - Chris: Random Forest
     - Vighnesh: KNN
+    - Misc.: Ridge, Lasso
+    - Batch Gradient Descent: Randomly take batch (subset of row) and compute gradient on subset of data
