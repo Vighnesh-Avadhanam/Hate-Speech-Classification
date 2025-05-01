@@ -13,23 +13,34 @@
 
 # Problem
 
+
 # Data Sources 
+
 
 # Data Collection Method
 
-# Data Limitations
+
+# Instructioms
+
 
 # Models Used
 ## Logistsic
 
+
 ## Naive Baye's
+
 
 ## XGBoost
 
+
 ## Random Forest
+
 
 ## KNN
 
 
 # Model Selection
+
+
+# Data Limitations
 
