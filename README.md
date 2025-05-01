@@ -12,7 +12,7 @@
     - Batch Gradient Descent: Randomly take batch (subset of row) and compute gradient on subset of data
 
 # Problem
-
+In our final project, we are comparing various classification models in their ability to detect hate speech. Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech.
 
 # Data Sources 
 
