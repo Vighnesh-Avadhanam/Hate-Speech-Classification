@@ -20,7 +20,7 @@
 # Data Collection Method
 
 
-# Instructioms
+# Instructions
 
 
 # Models Used
