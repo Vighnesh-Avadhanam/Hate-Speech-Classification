@@ -20,7 +20,7 @@ In our final project, we are comparing various classification models in their ab
 # Data Collection Method
 
 
-# Instructions
+# Instructions for Reproducibility
 
 
 # Models Used
