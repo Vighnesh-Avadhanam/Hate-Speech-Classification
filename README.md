@@ -20,10 +20,7 @@
 In our final project, we are comparing various classification models in their ability to detect hate speech. Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech.
 
 # Data Sources and Collection Methods
-The source for training data comes from https://huggingface.co/datasets/tasksource/dynahate, created by Vidgen et.al (2021). The source for test data comes from the ETHOS Hate Speech Dectection dataset, which scrapes comments from YouTube and Reddit with various levels of hate speech recognition.
-
-# Data Collection Method
-
+The source for training data comes from https://huggingface.co/datasets/tasksource/dynahate, created by Vidgen et.al (2021). The source for test data comes from the ETHOS Hate Speech Dectection dataset (https://github.com/intelligence-csd-auth-gr/Ethos-Hate-Speech-Dataset/blob/master/ethos/ethos_data/Ethos_Dataset_Binary.csv), which scrapes comments from YouTube and Reddit with various levels of hate speech recognition.
 
 # Instructions for Reproducibility
 
