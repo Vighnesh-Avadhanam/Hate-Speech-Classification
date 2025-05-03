@@ -1,4 +1,4 @@
-# eco395m_ml_final
+# Hate Speech Classification
 
 * Find Dataset to train, ideal if hate is labeled
 * Test with "ambiguous data," (Twitter, Reddit, Craigslist, Quora)
@@ -24,10 +24,10 @@ In our final project, we are comparing various classification models in their ab
 
 
 # Models Used
-## Logistsic
+## Logistic
 
 
-## Naive Baye's
+## Naive Bayes
 
 
 ## XGBoost
