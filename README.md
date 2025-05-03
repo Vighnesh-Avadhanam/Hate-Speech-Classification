@@ -15,6 +15,8 @@
 In our final project, we are comparing various classification models in their ability to detect hate speech. Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech.
 
 # Data Sources 
+Our major source for training data comes from https://huggingface.co/datasets/tasksource/dynahate, created by Vidgen et.al(2021)
+
 
 
 # Data Collection Method
@@ -43,4 +45,12 @@ In our final project, we are comparing various classification models in their ab
 
 
 # Data Limitations
+
+
+### Citation
+
+Vidgen, B., Thrush, T., Waseem, Z., & Kiela, D. (2021).  
+**Learning from the Worst: Dynamically Generated Datasets to Improve Online Hate Detection**.  
+*Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL)*.  
+[https://doi.org/10.18653/v1/2021.acl-long.132](https://doi.org/10.18653/v1/2021.acl-long.132)
 
