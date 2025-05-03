@@ -67,13 +67,6 @@ class Dynahate(datasets.GeneratorBasedBuilder):
             citation=_CITATION,
         )
 
-    def _split_generators(self, dl_manager):
-        csv_path = dl_manager.download_and_extract(_DOWNLOAD_URL.format(version=self.config.name))
-        return [
-            datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"csv_path": csv_path, "split": "train"}),
-            datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={"csv_path": csv_path, "split": "dev"}),
-            datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"csv_path": csv_path, "split": "test"}),
-        ]
 
     def _generate_examples(self, csv_path, split):
         """Generate AG News examples."""
