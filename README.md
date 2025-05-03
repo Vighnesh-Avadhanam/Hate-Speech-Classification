@@ -10,6 +10,11 @@
     - Vighnesh: KNN
     - Misc.: Ridge, Lasso
     - Batch Gradient Descent: Randomly take batch (subset of row) and compute gradient on subset of data
+ 
+* Use Hate BERT for each of our models.
+* Write code that brings all ROCs together from regular model and Hate Bert model. (so two graphs each showing multiple ROCs)
+* Then created stacked models, one for regular and one for hate BERT
+* Then get confusion matrix for each stacked model in order to give a final comparison between Hate Bert and regular
 
 # Problem
 In our final project, we are comparing various classification models in their ability to detect hate speech. Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech.
