@@ -17,14 +17,13 @@
 * Then get confusion matrix for each stacked model in order to give a final comparison between Hate Bert and regular
 
 # Problem
-In this project, we compare various classification models in their ability to detect hate speech. Broadly, we compare their abilities with a $all-MiniLM-L6-v2$ sentence transformer and a hateBERT (Bidirectional Encoder Representations from Transformers) model.
-Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech.
+In this project, we compare various classification models in their ability to detect hate speech. Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech. Broadly, we compare their detection abilities using a $all-MiniLM-L6-v2$ sentence transformer model, and later find an optimal stacking of the models.
 
 # Data Sources and Collection Methods
 Our training dataset was created by Vidgen et.al (2021), found [here](https://huggingface.co/datasets/tasksource/dynahate). This consists of over 41,000 comments that are defined as either "hate" or "not hate". The source for the test data comes from the ETHOS Hate Speech Dectection dataset, found [here](https://github.com/intelligence-csd-auth-gr/Ethos-Hate-Speech-Dataset/blob/master/ethos/ethos_data/Ethos_Dataset_Binary.csv). This dataset scrapes 998 comments from YouTube and Reddit and contains the likelihood of whether a comment is hate speech or not.
 
 # Instructions for Reproducibility
-
+To obtain the training data, download `hugging_face_data.py` file from the Hugging Face dataset, place into the code folder, and run the `csv_creator.py` file in the code folder. To obtain the test data, download the `Ethos_Dataset_Binary.csv` file from the attached test repository, place into the data folder, then run the `clean_data.py` code in the code folder to change the format and file name. To run the models, their respective codes can be ran in the code folder to obtain the necessary information on each model.
 
 # Models Used
 ## all-MiniLM-L6-v2
