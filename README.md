@@ -21,7 +21,7 @@ In this project, we compare various classification models in their ability to de
 Specifically, we will train the models with phrases that are already classified as hate speech or not. We then test the models on phrases that are not classified to see how well they can identify hate speech.
 
 # Data Sources and Collection Methods
-Our training dataset was created by Vidgen et.al (2021), found [here](https://huggingface.co/datasets/tasksource/dynahate).The source for test data comes from the ETHOS Hate Speech Dectection dataset (https://github.com/intelligence-csd-auth-gr/Ethos-Hate-Speech-Dataset/blob/master/ethos/ethos_data/Ethos_Dataset_Binary.csv), which scrapes comments from YouTube and Reddit with various levels of hate speech recognition.
+Our training dataset was created by Vidgen et.al (2021), found [here](https://huggingface.co/datasets/tasksource/dynahate).The source for the test data comes from the ETHOS Hate Speech Dectection dataset, found [here](https://github.com/intelligence-csd-auth-gr/Ethos-Hate-Speech-Dataset/blob/master/ethos/ethos_data/Ethos_Dataset_Binary.csv). This dataset scrapes comments from YouTube and Reddit and contains the likelihood of whether a comment is hate speech or not.
 
 # Instructions for Reproducibility
 
@@ -37,7 +37,7 @@ Our training dataset was created by Vidgen et.al (2021), found [here](https://hu
 
 
 # Data Limitations
-
+Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored.
 
 ### Citation
 
