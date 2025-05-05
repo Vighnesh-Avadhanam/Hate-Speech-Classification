@@ -1,7 +1,7 @@
 # Problem
 In this project, we compare the performance of various classification models in their ability to detect hate speech. These include Logistic Regression (with L1, L2, and no penalty), KNN, RandomForest Classifier, XGBoost, and GaussianNB. Specifically, we train the models with a large dataset of phrases that are already classified as hate speech or not. We then test the models on a separate dataset of phrases to see how well they can identify hate speech. Broadly, we compare their detection abilities using a $all-MiniLM-L6-v2$ sentence transformer model and a $hateBERT$ sentence transformer model.
 
-# Data Sources and Collection Methods
+# Data Sources
 Our training dataset was created by Vidgen et.al (2021), found [here](https://huggingface.co/datasets/tasksource/dynahate). This consists of over 41,000 comments that are defined as either "hate" or "not hate". The source for the test data comes from the ETHOS Hate Speech Dectection dataset, found [here](https://github.com/intelligence-csd-auth-gr/Ethos-Hate-Speech-Dataset/blob/master/ethos/ethos_data/Ethos_Dataset_Binary.csv). This dataset scrapes 998 comments from YouTube and Reddit and contains the likelihood of whether a comment is hate speech or not.
 
 # Instructions for Reproducibility
