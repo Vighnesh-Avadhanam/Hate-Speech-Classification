@@ -64,6 +64,10 @@ A major limitation for the models is the computation time, as some of these mode
 ## Ben
 ## Chris
 ## Juan
+* Obtained training data
+* Wrote script for the extraction of data
+* Built XGBoost and hateBERT_XGBoost models
+  
 ## Nicolas
 * Built the Logistic, Lasso, and Ridge Models
 * Found the test data and uploaded to repository
