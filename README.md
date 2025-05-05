@@ -59,7 +59,7 @@ A major limitation for the models is the computation time, as some of these mode
 
 ## Vighnesh
 * Built the KNN models
-* Built the Logistic and LASSO hateBERT models
+* Built the Logistic and Lasso hateBERT models
   
 ### Citation
 
