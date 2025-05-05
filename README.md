@@ -1,4 +1,4 @@
-# Problem
+# Model Performance for Hate Speech Classification
 In this project, we compare the performance of various classification models in their ability to detect hate speech. These include Logistic Regression (with L1, L2, and no penalty), KNN, RandomForest Classifier, XGBoost, and GaussianNB. Specifically, we train the models with a large dataset of phrases that are already classified as hate speech or not. We then test the models on a separate dataset of phrases to see how well they can identify hate speech. Broadly, we compare their detection abilities using a $all-MiniLM-L6-v2$ sentence transformer model and a $hateBERT$ sentence transformer model.
 
 # Data Sources
