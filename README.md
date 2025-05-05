@@ -28,6 +28,7 @@ To obtain the training data, download `hugging_face_data.py` file from the Huggi
 # Models Used
 ## all-MiniLM-L6-v2
 ![image](https://github.com/user-attachments/assets/d22a1f52-a94d-4e7f-a4ad-f9749ccc18d0)
+![image](https://github.com/user-attachments/assets/09d3c417-a879-4051-9268-253ee9cba352)
 
 
 ## hateBERT
