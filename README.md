@@ -47,6 +47,7 @@ When looking at the ROC curves for the seven models uisng the $hateBERT$ sentenc
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6b454e24-efef-49bf-a0cc-a54d8607efc8" height="500"/>
 </p>
+
 When looking at the Precision-Recall curves for the seven models using the $hateBERT$ sentence transformer, the Logistic-based models do best  with an Average Precision of 0.78, which is the same as the the previous transformer we saw.
 
 # Model Selection
@@ -58,7 +59,7 @@ Our major limitation is that we are unable to detect any possible hate speech th
 # Model Limitations
 <p align="center">
   <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" width="45%" />
-  <img src="images/xgb_hatebert_matrix.png" alt="XGB HateBERT" width="45%" />
+  <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" width="45%" />
 </p>
 
 A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. We also do not stack models due to the computation time for the attempts we had on creating.
