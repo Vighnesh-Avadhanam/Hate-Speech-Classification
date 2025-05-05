@@ -1,25 +1,21 @@
-import numpy as np
 import pandas as pd
-import torch
-from transformers import AutoTokenizer, AutoModel
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
+from sentence_transformers import SentenceTransformer
+from sklearn.ensemble import RandomForestClassifier
 from sentence_transformers import SentenceTransformer, models
+import seaborn as sns
+import pandas as pd
+from xgboost import XGBClassifier
+from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (
-    classification_report,
-    confusion_matrix,
-    f1_score,
-    roc_auc_score,
-    roc_curve
-)
-from xgboost import XGBClassifier
 import matplotlib.pyplot as plt
-import seaborn as sns
-from xgboost import XGBClassifier 
+from sklearn.naive_bayes import GaussianNB  
+import torch
+from transformers import AutoTokenizer, AutoModel
 
 class HateSpeechXGBClassifier:
     def __init__(
@@ -607,3 +603,43 @@ class LassoHateBERT(BaseEstimator, ClassifierMixin):
         if save_path:
             plt.savefig(save_path, format='jpg')
         plt.close()
+
+class NBHateBERTClassifier(BaseEstimator, ClassifierMixin):
+    """
+    Gaussian Naive Bayes classifier using HateBERT embeddings.
+    """
+
+    def __init__(self):
+        self.tokenizer = AutoTokenizer.from_pretrained("GroNLP/hateBERT")
+        self.encoder = AutoModel.from_pretrained("GroNLP/hateBERT")
+        self.model = GaussianNB()
+
+    def embed(self, texts: pd.Series, batch_size: int = 16) -> np.ndarray:
+        self.encoder.eval()
+        embeddings = []
+
+        with torch.no_grad():
+            for i in range(0, len(texts), batch_size):
+                batch = texts[i:i+batch_size].tolist()
+                encoded = self.tokenizer(batch, return_tensors="pt", truncation=True, padding=True, max_length=512)
+                output = self.encoder(**encoded)
+                cls_emb = output.last_hidden_state[:, 0, :]  # CLS token
+                embeddings.append(cls_emb.cpu().numpy())
+
+        return np.vstack(embeddings)
+
+    def fit(self, X: pd.Series, y: pd.Series) -> None:
+        X_embed = self.embed(X)
+        self.model.fit(X_embed, y)
+
+    def predict(self, X: pd.Series) -> np.ndarray:
+        X_embed = self.embed(X)
+        return self.model.predict(X_embed)
+
+    def predict_proba(self, X: pd.Series) -> np.ndarray:
+        X_embed = self.embed(X)
+        return self.model.predict_proba(X_embed)
+
+    def evaluate(self, X_test: pd.Series, y_test: pd.Series) -> None:
+        y_pred = self.predict(X_test)
+        print(classification_report(y_test, y_pred))
