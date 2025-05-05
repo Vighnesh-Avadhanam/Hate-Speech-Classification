@@ -49,13 +49,13 @@ When looking at the ROC curves for the seven models uisng the $hateBERT$ sentenc
 When looking at the Precision-Recall curves for the seven models using the $hateBERT$ sentence transformer, the Logistic-based models do best  with an Average Precision of 0.78, which is the same as the the previous transformer we saw.
 
 # Model Selection
-
+Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well.
 
 # Data Limitations
 Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
 
 # Model Limitations
-A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech.
+A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. We also do not stack models due to the computation time for the attempts we had on creating.
 
 # Declaration of Work
 ## Ben
