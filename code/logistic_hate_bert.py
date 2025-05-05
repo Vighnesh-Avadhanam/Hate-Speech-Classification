@@ -118,8 +118,8 @@ class LogisticHateBERT(BaseEstimator, ClassifierMixin):
         plt.close()
 
 
-train_df = pd.read_csv("C:/Users/Admin/Desktop/ML/eco395m_ml_final/data/train_data.csv")
-test_df = pd.read_csv("C:/Users/Admin/Desktop/ML/eco395m_ml_final/data/test_data.csv", sep=";")
+train_df = pd.read_csv("../data/train_data.csv")
+test_df = pd.read_csv("../data/test_data.csv", sep=";")
 
 train_texts = train_df["text"].tolist()
 train_labels = train_df["label"].tolist()
