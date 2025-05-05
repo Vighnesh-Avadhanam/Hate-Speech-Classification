@@ -26,7 +26,7 @@ class LassoHateBERT(BaseEstimator, ClassifierMixin):
 
     def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
                  precomputed=False, use_hatebert=False,
-                 penalty="l1", C=1.0, solver='lbfgs', random_state=42):
+                 penalty="l1", C=1.0, solver='liblinear', random_state=42):
         self.threshold = threshold
         self.model_name = model_name
         self.precomputed = precomputed
@@ -118,8 +118,8 @@ class LassoHateBERT(BaseEstimator, ClassifierMixin):
         plt.close()
 
 
-train_df = pd.read_csv(r"C:\Users\nicol\Desktop\Ed_Krueger\eco395m_ml_final\data\train_data.csv")
-test_df = pd.read_csv(r"C:\Users\nicol\Desktop\Ed_Krueger\eco395m_ml_final\data\test_data.csv", sep=";")
+train_df = pd.read_csv("C:/Users/Admin/Desktop/ML/eco395m_ml_final/data/train_data.csv")
+test_df = pd.read_csv("C:/Users/Admin/Desktop/ML/eco395m_ml_final/data/test_data.csv", sep=";")
 
 train_texts = train_df["text"].tolist()
 train_labels = train_df["label"].tolist()
@@ -142,7 +142,7 @@ custom_preds = (probs >= 0.25).astype(int)
 print(classification_report(test_labels_bin, custom_preds))
 
 model.plot_confusion_matrix(test_labels_bin, custom_preds,
-    save_path=r"C:\Users\nicol\Desktop\Ed_Krueger\eco395m_ml_final\images\lasso_hate_bert_confusion_matrix.jpg")
+    save_path="C:/Users/Admin/Desktop/ML/eco395m_ml_final/images/lasso_hate_bert_confusion_matrix.jpg")
 
 model.plot_roc_curve(X_test_reduced, test_labels_bin,
-    save_path=r"C:\Users\nicol\Desktop\Ed_Krueger\eco395m_ml_final\images\lasso_hate_bert_roc_curve.jpg")
+    save_path="C:/Users/Admin/Desktop/ML/eco395m_ml_final/images/lasso_hate_bert_roc_curve.jpg")
