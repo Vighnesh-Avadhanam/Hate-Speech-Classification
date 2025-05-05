@@ -81,6 +81,15 @@ When looking at the Precision-Recall curves for the seven models using the $hate
   <b>Left: XGB with all-MiniLM-L6-v2 Sentence Transformers; Right: XGB with hateBERT Sentence Transformers</b>
 </p>
 
+<p align="center">
+  <img src="images/rf_matrix.png" alt="RF MiniLM" height="300" style="margin-right: 10px;" />
+  <img src="images/rf_hate_bert_confusion_matrix.png" alt="RF hateBERT" height="300" />
+</p>
+
+<p align="center">
+  <b>Left: RF with all-MiniLM-L6-v2 Sentence Transformers; Right: RF with hateBERT Sentence Transformers</b>
+</p>
+
 
 
 # Model Selection
