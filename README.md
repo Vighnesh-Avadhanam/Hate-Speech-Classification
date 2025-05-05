@@ -41,6 +41,7 @@ Due to its performance on the ROC and Precision-Recall curves for both sentence 
 We decided to run a sentence transformer without implementing a model to see how well it would run. Unlike hateBERT, DistilBERT is trained on a generalized language model, so it would have more information to run on. The final ROC curve is as follows:
 <p align="center">
   <img src="https://github.com/user-attachments/assets/215f53b7-bed6-4091-977e-ff2fbd1c98ac" height="500"/>
+  <img src="https://github.com/user-attachments/assets/6c15f865-135d-4306-966e-a75893788c2f" height="500"/>
 </p>
 This model exceeds all other models in its AUC, as it is not limited in its vocabulary as hateBERt is.
 
