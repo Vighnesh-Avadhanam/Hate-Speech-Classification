@@ -58,7 +58,9 @@ A major limitation for the models is the computation time, as some of these mode
 * Created `roc_curves.py` and `pr_curves.py` code
 
 ## Vighnesh
-
+* Built the KNN models
+* Built the Logistic and LASSO hateBERT models
+  
 ### Citation
 
 Vidgen, B., Thrush, T., Waseem, Z., & Kiela, D. (2021).  
