@@ -35,7 +35,7 @@ When looking at the ROC curves for the seven models uisng the $hateBERT$ sentenc
 When looking at the Precision-Recall curves for the seven models using the $hateBERT$ sentence transformer, the Logistic-based models do best  with an Average Precision of 0.78, which is the same as the the previous transformer we saw.
 
 # Model Selection
-Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well.
+Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well. It seems as though adding the penalties does not affect the model's precision or recall.
 
 # Data Limitations
 Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
@@ -53,6 +53,10 @@ A major limitation for the models is the computation time, as some of these mode
 ## Chris
 ## Juan
 ## Nicolas
+* Built the Logistic, Lasso, and Ridge Models
+* Found the test data and uploaded to repository
+* Created `roc_curves.py` and `pr_curves.py` code
+
 ## Vighnesh
 
 ### Citation
