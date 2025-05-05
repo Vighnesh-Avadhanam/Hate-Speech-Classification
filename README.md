@@ -35,7 +35,7 @@ When looking at the ROC curves for the seven models using the $all-MiniLM-L6-v2$
 <p align="center">
   <img src="https://github.com/user-attachments/assets/09d3c417-a879-4051-9268-253ee9cba352" width="600"/>
 </p>
-When looking at the Precision-Recall curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see there is a four-way tie between the Logistic-based and the XGBoost models with 0.78.
+When looking at the Precision-Recall curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see there is a four-way tie between the Logistic-based and the XGBoost models with an Average Precision of 0.78.
 
 ## hateBERT
 <p align="center">  
@@ -46,7 +46,7 @@ When looking at the ROC curves for the seven models uisng the $hateBERT$ sentenc
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6b454e24-efef-49bf-a0cc-a54d8607efc8" height="500"/>
 </p>
-When looking at the Precision-Recall curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see there is a four-way tie between the Logistic-based and the XGBoost models with 0.78.
+When looking at the Precision-Recall curves for the seven models using the $hateBERT$ sentence transformer, the Logistic-based models do best  with an Average Precision of 0.78, which is the same as the the previous transformer we saw.
 
 # Model Selection
 
