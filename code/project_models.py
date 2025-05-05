@@ -15,6 +15,8 @@ from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB  
 
+"Since we were having trouble calling on the functions from their notebooks, this code places all of the mini-LM embedding models onto a .py file."
+
 class LogisticHateSpeech:
     """Lasso model using sentence embeddings to detect hate speech."""
 
