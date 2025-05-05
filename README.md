@@ -34,6 +34,9 @@ When looking at the ROC curves for the seven models uisng the $hateBERT$ sentenc
 
 When looking at the Precision-Recall curves for the seven models using the $hateBERT$ sentence transformer, the Logistic-based models do best  with an Average Precision of 0.78, which is the same as the the previous transformer we saw.
 
+## Comparison of Confusion Matrices
+
+
 # Model Selection
 Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well. It seems as though adding the penalties does not affect the model's precision or recall.
 
