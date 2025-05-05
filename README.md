@@ -31,6 +31,7 @@ To obtain the training data, download `hugging_face_data.py` file from the Huggi
   <img src="https://github.com/user-attachments/assets/d22a1f52-a94d-4e7f-a4ad-f9749ccc18d0" width="600"/>
 </p>
 When looking at the ROC curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see all the Logistic-based models have the best AUC with 0.79.
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/09d3c417-a879-4051-9268-253ee9cba352" width="600"/>
 </p>
@@ -41,7 +42,10 @@ When looking at the Precision-Recall curves for the seven models using the $all-
     <img src="https://github.com/user-attachments/assets/f9fc698b-f0c8-401c-bbd0-5150d30775fa" height="600"/>
 </p>
 When looking at the ROC curves for the seven models uisng the $hateBERT$ sentence transformers, we see all the Logistic-based models have the best AUC with 0.79, which is the same as the the previous transformer we saw.
-![image](https://github.com/user-attachments/assets/6b454e24-efef-49bf-a0cc-a54d8607efc8)
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6b454e24-efef-49bf-a0cc-a54d8607efc8" height="600"/>
+</p>
 
 # Model Selection
 
