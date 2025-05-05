@@ -55,8 +55,8 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 </p>
 
 <p align="center">
-  <img src="images/xb_matrix.png" alt="XGB MiniLM" height="250" style="margin-right: 10px;" />
-  <img src="images/xb_hatebert_matrix.png" alt="XGB hateBERT" height="250" />
+  <img src="images/xb_matrix.png" alt="XGB MiniLM" height="300" style="margin-right: 10px;" />
+  <img src="images/xb_hatebert_matrix.png" alt="XGB hateBERT" height="300" />
 </p>
 
 <p align="center">
