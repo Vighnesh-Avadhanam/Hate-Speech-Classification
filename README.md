@@ -27,6 +27,7 @@ To obtain the training data, download `hugging_face_data.py` file from the Huggi
 
 # Models Used
 ## all-MiniLM-L6-v2
+![image](https://github.com/user-attachments/assets/d22a1f52-a94d-4e7f-a4ad-f9749ccc18d0)
 
 
 ## hateBERT
@@ -36,7 +37,10 @@ To obtain the training data, download `hugging_face_data.py` file from the Huggi
 
 
 # Data Limitations
-Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found. 
+Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
+
+# Model Limitations
+A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output.
 
 ### Citation
 
