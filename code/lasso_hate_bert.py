@@ -118,8 +118,11 @@ class LassoHateBERT(BaseEstimator, ClassifierMixin):
         plt.close()
 
 
-train_df = pd.read_csv("C:/Users/Admin/Desktop/ML/eco395m_ml_final/data/train_data.csv")
-test_df = pd.read_csv("C:/Users/Admin/Desktop/ML/eco395m_ml_final/data/test_data.csv", sep=";")
+base_dir =  os.getcwd()
+test_path = os.path.join(base_dir, "../data/test_data.csv")
+train_path = os.path.join(base_dir, "../data/train_data.csv")
+train_df = pd.read_csv(train_path)
+test_df = pd.read_csv(test_path, sep=";")
 
 train_texts = train_df["text"].tolist()
 train_labels = train_df["label"].tolist()
@@ -141,8 +144,10 @@ custom_preds = (probs >= 0.25).astype(int)
 
 print(classification_report(test_labels_bin, custom_preds))
 
-model.plot_confusion_matrix(test_labels_bin, custom_preds,
-    save_path="C:/Users/Admin/Desktop/ML/eco395m_ml_final/images/lasso_hate_bert_confusion_matrix.jpg")
 
-model.plot_roc_curve(X_test_reduced, test_labels_bin,
-    save_path="C:/Users/Admin/Desktop/ML/eco395m_ml_final/images/lasso_hate_bert_roc_curve.jpg")
+base_dir = os.getcwd()
+confusion_path = os.path.join(base_dir, "images", "lasso_hate_bert_confusion_matrix.jpg")
+roc_path = os.path.join(base_dir, "images", "lasso_hate_bert_roc_curve.jpg")
+model.plot_confusion_matrix(test_labels_bin, custom_preds, save_path=confusion_path)
+model.plot_roc_curve(X_test_reduced, test_labels_bin, save_path=roc_path)
+
