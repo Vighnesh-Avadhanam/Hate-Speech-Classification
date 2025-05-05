@@ -17,6 +17,8 @@ from sklearn.naive_bayes import GaussianNB
 import torch
 from transformers import AutoTokenizer, AutoModel
 
+"Since we were having trouble calling on the functions from their notebooks, this code places all of the hateBERT embedding models onto a .py file."
+
 class HateSpeechXGBClassifier:
     def __init__(
         self,
