@@ -5,3 +5,6 @@ sentence-transformers
 matplotlib
 torch
 transformers
+xgboost
+seaborn
+os
