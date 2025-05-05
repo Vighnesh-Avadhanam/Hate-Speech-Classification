@@ -63,6 +63,9 @@ A major limitation for the models is the computation time, as some of these mode
 # Declaration of Work
 ## Ben
 ## Chris
+* Built the Random Forest and hateBERT Random Forest models
+* Built the hateBERT Ridge model
+  
 ## Juan
 * Obtained training data
 * Wrote script for the extraction of data
