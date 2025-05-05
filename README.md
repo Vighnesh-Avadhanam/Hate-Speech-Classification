@@ -80,3 +80,8 @@ Vidgen, B., Thrush, T., Waseem, Z., & Kiela, D. (2021).
 *Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL)*.  
 [https://doi.org/10.18653/v1/2021.acl-long.132](https://doi.org/10.18653/v1/2021.acl-long.132)
 
+Sanh, Victor, Debut, Lysandre, Chaumond, Julien, & Wolf, Thomas. (2020).
+DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter.
+5th Workshop on Energy Efficient Machine Learning and Cognitive Computing - NeurIPS 2019.
+[https://doi.org/10.48550/arXiv.1910.01108]
+
