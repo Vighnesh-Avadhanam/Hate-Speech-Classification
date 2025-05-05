@@ -43,11 +43,11 @@ Our major limitation is that we are unable to detect any possible hate speech th
 # Model Limitations
 <p align="center">
   <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" width="45%" />
-  <img src="images/xgb_hatebert_matrix.png" alt="XGB HateBERT" width="45%" />
+  <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" width="45%" />
 </p>
 
 <p align="center">
-  <b>KNN (MiniLM)</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>XGBoost (HateBERT)</b>
+  <b>KNN (MiniLM)</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>KNN (HateBERT)</b>
 </p>
 
 A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. We also do not stack models due to the computation time for the attempts we had on creating.
