@@ -118,7 +118,7 @@ This model exceeds all other models in its AUC, as it is not limited in its voca
 A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. In an attempt to speed up runtime, we use methods like `PCA` and
 `HalvingGridSearchCV`, so that itself could be driving some of our results.
 
-The above images plot the confusion matrices for the KNN Model with the hateBERT and $all-MiniLM-L6-v2$ sentence transforms. Specifically hateBERT tends to have a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to hateBERT being trained on a large dataset of extreme hate speech from banned communities in Reddit.
+The confusion matrices we placed above compare the embedding of the hateBERT and $all-MiniLM-L6-v2$ sentence transforms. HateBERT tends to have a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to hateBERT being trained on a large dataset of extreme hate speech from banned communities in Reddit.
 
 We are also unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
 
