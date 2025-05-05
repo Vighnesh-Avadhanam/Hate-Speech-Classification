@@ -123,7 +123,7 @@ class LogisticHateSpeech(BaseEstimator, ClassifierMixin):
         max_iter (int): Maximum iterations for solver.
         precomputed (bool): Whether input to fit/predict is already embedded.
     """
-    def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
+    def __init__(self, threshold=0.25, model_name="all-MiniLM-L6-v2",
                  penalty='l2', C=1.0, max_iter=1000, precomputed=False):
         self.threshold = threshold
         self.model_name = model_name
@@ -134,7 +134,7 @@ class LogisticHateSpeech(BaseEstimator, ClassifierMixin):
 
         self.embedder = SentenceTransformer(model_name)
         self.scaler = StandardScaler()
-        self.model = LogisticRegression(penalty=self.penalty, C=self.C, max_iter=self.max_iter)
+        self.model = LogisticRegression(penalty=None, C=self.C, max_iter=self.max_iter)
 
     def fit(self, X, y):
         if self.precomputed:
@@ -168,149 +168,111 @@ class LogisticHateSpeech(BaseEstimator, ClassifierMixin):
 
 
 
-class RidgeHateSpeech:
-    """Logistic model using sentence embeddings to detect hate speech."""
+class RidgeHateSpeechClassifier(BaseEstimator, ClassifierMixin):
+    """
+    Scikit-learn compatible Ridge Logistic Regression-based hate speech classifier using sentence-transformer embeddings.
 
-    def __init__(self):
-        """
-        Initialize classifier with logistic model and encoder.
-        """
-        self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
-        self.model = LogisticRegression(max_iter=1000)
-        self.best_threshold = 0.25
+    Args:
+        threshold (float): Probability threshold for binary classification.
+        model_name (str): SentenceTransformer model to use.
+        C (float): Inverse regularization strength.
+        max_iter (int): Maximum iterations for solver.
+        precomputed (bool): Whether input to fit/predict is already embedded.
+    """
+    def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
+                 C=1.0, max_iter=1000, precomputed=False):
+        self.threshold = threshold
+        self.model_name = model_name
+        self.C = C
+        self.max_iter = max_iter
+        self.precomputed = precomputed
 
-    def embed(self, texts: pd.Series) -> np.ndarray:
-        """
-        Embed text using SentenceTransformer.
+        self.embedder = SentenceTransformer(model_name)
+        self.scaler = StandardScaler()
+        self.model = LogisticRegression(penalty='l2', C=self.C, max_iter=self.max_iter)
 
-        Args:
-            texts (pd.Series): Input phrases.
+    def fit(self, X, y):
+        if self.precomputed:
+            X_scaled = self.scaler.fit_transform(X)
+        else:
+            X_emb = self.get_embeddings(X, scale=True)
+            X_scaled = X_emb
+        self.model.fit(X_scaled, y)
+        return self
 
-        Returns:
-            np.ndarray: Sentence embeddings.
-        """
-        return self.encoder.encode(texts.tolist(), show_progress_bar=False)
+    def predict_proba(self, X):
+        if self.precomputed:
+            X_scaled = self.scaler.transform(X)
+        else:
+            X_emb = self.get_embeddings(X, scale=True)
+            X_scaled = X_emb
+        return self.model.predict_proba(X_scaled)
 
-    def train(self, X: pd.Series, y: pd.Series) -> None:
-        """
-        Train the logistic regression model.
+    def predict(self, X):
+        probs = self.predict_proba(X)[:, 1]
+        return (probs >= self.threshold).astype(int)
 
-        Args:
-            X (pd.Series): Text samples.
-            y (pd.Series): Binary labels (0 or 1).
-        """
-        X_embed = self.embed(X)
-        self.model.fit(X_embed, y)
+    def score(self, X, y):
+        return np.mean(self.predict(X) == np.array(y))
 
-    def predict_proba(self, X: pd.Series) -> pd.Series:
-        """
-        Predict probability of hate speech.
+    def get_embeddings(self, texts, scale=True):
+        if isinstance(texts, np.ndarray):
+            texts = texts.tolist()
+        embeddings = self.embedder.encode(texts, show_progress_bar=False)
+        return self.scaler.fit_transform(embeddings) if scale else embeddings
+    
+class LassoHateSpeechClassifier(BaseEstimator, ClassifierMixin):
+    """
+    Scikit-learn compatible Lasso Logistic Regression-based hate speech classifier using sentence-transformer embeddings.
 
-        Args:
-            X (pd.Series): Input phrases.
+    Args:
+        threshold (float): Probability threshold for binary classification.
+        model_name (str): SentenceTransformer model to use.
+        C (float): Inverse regularization strength.
+        max_iter (int): Maximum iterations for solver.
+        precomputed (bool): Whether input to fit/predict is already embedded.
+    """
+    def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
+                 C=1.0, max_iter=1000, precomputed=False):
+        self.threshold = threshold
+        self.model_name = model_name
+        self.C = C
+        self.max_iter = max_iter
+        self.precomputed = precomputed
 
-        Returns:
-            pd.Series: Predicted probabilities between 0 and 1.
-        """
-        X_embed = self.embed(X)
-        proba = self.model.predict_proba(X_embed)[:, 1]
-        return pd.Series(proba, index=X.index)
+        self.embedder = SentenceTransformer(model_name)
+        self.scaler = StandardScaler()
+        self.model = LogisticRegression(penalty='l1', solver='liblinear', C=self.C, max_iter=self.max_iter)
 
-    def find_best_threshold(self, y_true: pd.Series, proba: pd.Series, metric: str) -> float:
-        """Find threshold that maximizes the chosen metric."""
-        thresholds = np.linspace(0.0, 1.0, 101)
-        scores = []
+    def fit(self, X, y):
+        if self.precomputed:
+            X_scaled = self.scaler.fit_transform(X)
+        else:
+            X_emb = self.get_embeddings(X, scale=True)
+            X_scaled = X_emb
+        self.model.fit(X_scaled, y)
+        return self
 
-        for t in thresholds:
-            y_pred = (proba >= t).astype(int)
-            if metric == "accuracy":
-                score = accuracy_score(y_true, y_pred)
-            elif metric == "precision":
-                score = precision_score(y_true, y_pred, zero_division=0)
-            elif metric == "recall":
-                score = recall_score(y_true, y_pred, zero_division=0)
-            else:
-                raise ValueError(f"Unsupported metric: {metric}")
-            scores.append(score)
+    def predict_proba(self, X):
+        if self.precomputed:
+            X_scaled = self.scaler.transform(X)
+        else:
+            X_emb = self.get_embeddings(X, scale=True)
+            X_scaled = X_emb
+        return self.model.predict_proba(X_scaled)
 
-        best_idx = np.argmax(scores)
-        return thresholds[best_idx]
+    def predict(self, X):
+        probs = self.predict_proba(X)[:, 1]
+        return (probs >= self.threshold).astype(int)
 
-    def evaluate(self, X_test: pd.Series, y_test: pd.Series, metric: str = "accuracy") -> None:
-        """
-        Evaluate model and print classification report using optimal threshold.
+    def score(self, X, y):
+        return np.mean(self.predict(X) == np.array(y))
 
-        Args:
-            X_test (pd.Series): Test input texts.
-            y_test (pd.Series): True binary labels.
-            metric (str): Metric to optimize threshold on ('accuracy', 'precision', 'recall').
-        """
-        proba = self.predict_proba(X_test)
-        self.best_threshold = self.find_best_threshold(y_test, proba, metric)
-
-        print(f"Best threshold based on {metric}: {self.best_threshold:.2f}")
-        y_pred = (proba >= self.best_threshold).astype(int)
-        print(classification_report(y_test, y_pred))
-
-class LassoHateSpeech:
-    """Lasso model using sentence embeddings to detect hate speech."""
-
-    def __init__(self):
-        """Initialize classifier with Lasso model and encoder."""
-        self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
-        self.model = LogisticRegression(penalty="l1", solver="liblinear", max_iter=1000)
-        self.best_threshold = 0.25  # default threshold
-
-    def embed(self, texts: pd.Series) -> np.ndarray:
-        """Embed text using SentenceTransformer."""
-        return self.encoder.encode(texts.tolist(), show_progress_bar=False)
-
-    def train(self, X: pd.Series, y: pd.Series) -> None:
-        """Train the logistic regression model."""
-        X_embed = self.embed(X)
-        self.model.fit(X_embed, y)
-
-    def predict_proba(self, X: pd.Series) -> pd.Series:
-        """Predict probability of hate speech."""
-        X_embed = self.embed(X)
-        proba = self.model.predict_proba(X_embed)[:, 1]
-        return pd.Series(proba, index=X.index)
-
-    def find_best_threshold(self, y_true: pd.Series, proba: pd.Series, metric: str) -> float:
-        """Find threshold that maximizes the chosen metric."""
-        thresholds = np.linspace(0.0, 1.0, 101)
-        scores = []
-
-        for t in thresholds:
-            y_pred = (proba >= t).astype(int)
-            if metric == "accuracy":
-                score = accuracy_score(y_true, y_pred)
-            elif metric == "precision":
-                score = precision_score(y_true, y_pred, zero_division=0)
-            elif metric == "recall":
-                score = recall_score(y_true, y_pred, zero_division=0)
-            else:
-                raise ValueError(f"Unsupported metric: {metric}")
-            scores.append(score)
-
-        best_idx = np.argmax(scores)
-        return thresholds[best_idx]
-
-    def evaluate(self, X_test: pd.Series, y_test: pd.Series, metric: str = "accuracy") -> None:
-        """
-        Evaluate model and print classification report using optimal threshold.
-
-        Args:
-            X_test (pd.Series): Test input texts.
-            y_test (pd.Series): True binary labels.
-            metric (str): Metric to optimize threshold on ('accuracy', 'precision', 'recall').
-        """
-        proba = self.predict_proba(X_test)
-        self.best_threshold = self.find_best_threshold(y_test, proba, metric)
-
-        print(f"Best threshold based on {metric}: {self.best_threshold:.2f}")
-        y_pred = (proba >= self.best_threshold).astype(int)
-        print(classification_report(y_test, y_pred))
+    def get_embeddings(self, texts, scale=True):
+        if isinstance(texts, np.ndarray):
+            texts = texts.tolist()
+        embeddings = self.embedder.encode(texts, show_progress_bar=False)
+        return self.scaler.fit_transform(embeddings) if scale else embeddings
 
 
 class NBHateSpeechClassifier(BaseEstimator, ClassifierMixin):
