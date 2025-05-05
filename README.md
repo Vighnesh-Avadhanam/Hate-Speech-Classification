@@ -46,6 +46,15 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 </p>
 
 <p align="center">
+  <img src="images/ridge_matrix.jpg" alt="Ridge MiniLM" height="300" style="margin-right: 10px;" />
+  <img src="images/ridge_hatebert_matrix.jpg" alt="Ridge hateBERT" height="300" />
+</p>
+
+<p align="center">
+  <b>Left: Ridge with all-MiniLM-L6-v2 Sentence Transformers; Right: Ridge with hateBERT Sentence Transformers</b>
+</p>
+
+<p align="center">
   <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" height="300" style="margin-right: 10px;" />
   <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" height="300" />
 </p>
