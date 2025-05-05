@@ -36,9 +36,29 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 
 ## Comparison of Confusion Matrices
 
+<p align="center">
+  <img src="images/log_matrix.png" alt="Log MiniLM" width="45%" />
+  <img src="images/log_hate_bert_confusion_matrix.jpg" alt="Log hateBERT" width="45%" />
+</p>
+
+<p align="center">
+  <b>Left: Logistic with all-MiniLM-L6-v2 Sentence Transformers; Right: Logistic with hateBERT Sentence Transformers</b>
+</p>
+
+<p align="center">
+  <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" width="45%" />
+  <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" width="45%" />
+</p>
+
+<p align="center">
+  <b>Left: KNN with all-MiniLM-L6-v2 Sentence Transformers; Right: KNN with hateBERT Sentence Transformers</b>
+</p>
+
 
 # Model Selection
 Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well. It seems as though adding the penalties does not affect the model's precision or recall.
+
+
 
 # Special Case: DistilBERT
 We decided to run a sentence transformer without implementing a model to see how well it would run. Unlike hateBERT, DistilBERT (Sanh et.al (2020)) is trained on a generalized language model, so it would have more information to run on. The final ROC curve and confusion matrix is as follows:
