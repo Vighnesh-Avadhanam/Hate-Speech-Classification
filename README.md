@@ -45,10 +45,10 @@ We decided to run a sentence transformer without implementing a model to see how
 </p>
 This model exceeds all other models in its AUC, as it is not limited in its vocabulary as hateBERT is.
 
-# Data Limitations
-Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
+# Limitations and Extensions
+A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. In an attempt to speed up runtime, we use methods like `PCA` and
+`HalvingGridSearchCV`, so that itself could be driving some of our results. 
 
-# Model Limitations
 <p align="center">
   <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" width="45%" />
   <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" width="45%" />
@@ -58,7 +58,10 @@ Our major limitation is that we are unable to detect any possible hate speech th
   <b>Left: KNN with all-MiniLM-L6-v2 Sentence Transformers; Right: KNN with hateBERT Sentence Transformers</b>
 </p>
 
-A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. In an attempt to speed up runtime, we use methods like `PCA` and `HalvingGridSearchCV`, so that could drive some of our results.
+The above images plot the confusion matrices for the KNN Model with the hateBERT and $all-MiniLM-L6-v2$ sentence transforms. Specifically hateBERT tends to have a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to hateBERT being trained on a large dataset of extreme hate speech from banned communities in Reddit.
+
+We are also unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
+
 
 # Declaration of Work
 ## Ben
