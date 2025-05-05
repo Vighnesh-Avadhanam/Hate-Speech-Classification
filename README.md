@@ -37,8 +37,9 @@ When looking at the ROC curves for the seven models using the $all-MiniLM-L6-v2$
 When looking at the Precision-Recall curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see there is a four-way tie between the Logistic-based and the XGBoost models with 0.78.
 
 ## hateBERT
-![image](https://github.com/user-attachments/assets/f9fc698b-f0c8-401c-bbd0-5150d30775fa)
-
+<p align="center">  
+    <img src="https://github.com/user-attachments/assets/f9fc698b-f0c8-401c-bbd0-5150d30775fa" height="600"/>
+</p>
 
 # Model Selection
 
