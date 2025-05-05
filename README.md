@@ -62,6 +62,9 @@ A major limitation for the models is the computation time, as some of these mode
 
 # Declaration of Work
 ## Ben
+* Built the Gaussian Naive Bayes model, the Gaussian Hatebert model, the DistilBERT model, and the Simple Neural Network model
+* Froze the DistilBERT model to make it accessible for more convenient use with other models
+  
 ## Chris
 * Built the Random Forest and hateBERT Random Forest models
 * Built the hateBERT Ridge model
