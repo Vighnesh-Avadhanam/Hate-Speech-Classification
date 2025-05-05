@@ -27,9 +27,14 @@ To obtain the training data, download `hugging_face_data.py` file from the Huggi
 
 # Models Used
 ## all-MiniLM-L6-v2
-![image](https://github.com/user-attachments/assets/d22a1f52-a94d-4e7f-a4ad-f9749ccc18d0)
-![image](https://github.com/user-attachments/assets/09d3c417-a879-4051-9268-253ee9cba352)
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d22a1f52-a94d-4e7f-a4ad-f9749ccc18d0" width="600"/>
+</p>
+When looking at the ROC curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see all the Logistic-based models have the best AUC with 0.79.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/09d3c417-a879-4051-9268-253ee9cba352" width="600"/>
+</p>
+When looking at the Precision-Recall curves for the seven models using the $all-MiniLM-L6-v2$ sentence transformer, we see there is a four-way tie between the Logistic-based and the XGBoost models with 0.78.
 
 ## hateBERT
 
