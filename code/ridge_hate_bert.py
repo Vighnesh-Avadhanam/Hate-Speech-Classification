@@ -1,84 +1,149 @@
-import os
-import numpy as np
-import pandas as pd
-from sklearn.decomposition import PCA
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix, roc_curve, roc_auc_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import (
+    confusion_matrix, roc_curve, roc_auc_score, classification_report
+)
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
+import pandas as pd
 from sentence_transformers import SentenceTransformer, models
-from tqdm import tqdm
 
-threshold = 0.25
-use_hatebert = True
-penalty = "l2"
-solver = "liblinear"
-output_dir = "images"
-os.makedirs(output_dir, exist_ok=True)
+class RidgeHateBERT(BaseEstimator, ClassifierMixin):
+    """
+    Ridge (L2-penalized) Logistic Regression hate speech classifier using SentenceTransformer or HateBERT.
+    """
 
-print(f"\ncwd = {os.getcwd()}")
-print("loading data...")
+    def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
+                 precomputed=False, use_hatebert=False,
+                 penalty="l2", C=1.0, solver='lbfgs', random_state=42):
+        self.threshold = threshold
+        self.model_name = model_name
+        self.precomputed = precomputed
+        self.use_hatebert = use_hatebert
+        self.penalty = penalty
+        self.C = C
+        self.solver = solver
+        self.random_state = random_state
 
-train_df = pd.read_csv("data/train_data.csv")
-test_df = pd.read_csv("data/test_data.csv", sep=";")
+        self.embedder = None
+        self.scaler = StandardScaler()
+        self.model_ = LogisticRegression(
+            penalty=self.penalty,
+            C=self.C,
+            solver=self.solver,
+            max_iter=1000,
+            random_state=self.random_state
+        )
+
+    def _load_embedder(self):
+        if self.embedder is None:
+            if self.use_hatebert:
+                word_model = models.Transformer("GroNLP/hateBERT")
+                pooling_model = models.Pooling(word_model.get_word_embedding_dimension())
+                self.embedder = SentenceTransformer(modules=[word_model, pooling_model])
+            else:
+                self.embedder = SentenceTransformer(self.model_name)
+
+    def fit(self, X, y):
+        if not self.precomputed:
+            self._load_embedder()
+            X = self.get_embeddings(X)
+        X_scaled = self.scaler.fit_transform(X)
+        self.model_.fit(X_scaled, y)
+        return self
+
+    def predict_proba(self, X):
+        if not self.precomputed:
+            self._load_embedder()
+            X = self.get_embeddings(X)
+        X_scaled = self.scaler.transform(X)
+        return self.model_.predict_proba(X_scaled)
+
+    def predict(self, X):
+        probs = self.predict_proba(X)
+        return (probs[:, 1] >= self.threshold).astype(int)
+
+    def score(self, X, y):
+        return np.mean(self.predict(X) == np.array(y))
+
+    def get_embeddings(self, texts, batch_size=32):
+        self._load_embedder()
+        if isinstance(texts, np.ndarray):
+            texts = texts.tolist()
+        return self.embedder.encode(
+            texts, batch_size=batch_size,
+            show_progress_bar=False, convert_to_numpy=True
+        )
+
+    def plot_confusion_matrix(self, y_true, y_pred, save_path=None):
+        cm = confusion_matrix(y_true, y_pred)
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+                    xticklabels=["Not Hate", "Hate"],
+                    yticklabels=["Not Hate", "Hate"])
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+        plt.title("Confusion Matrix")
+        plt.tight_layout()
+        if save_path:
+            plt.savefig(save_path, format='jpg')
+        plt.close()
+
+    def plot_roc_curve(self, X, y_true, save_path=None):
+        probs = self.predict_proba(X)[:, 1]
+        fpr, tpr, _ = roc_curve(y_true, probs)
+        auc = roc_auc_score(y_true, probs)
+        plt.figure(figsize=(8, 6))
+        plt.plot(fpr, tpr, label=f"ROC Curve (AUC = {auc:.2f})", linewidth=2)
+        plt.plot([0, 1], [0, 1], 'k--', label="Random Classifier")
+        plt.xlabel("False Positive Rate")
+        plt.ylabel("True Positive Rate")
+        plt.title("ROC Curve - Ridge Hate Speech Classifier")
+        plt.legend(loc="lower right")
+        plt.grid(True)
+        plt.tight_layout()
+        if save_path:
+            plt.savefig(save_path, format='jpg')
+        plt.close()
+
+train_df = pd.read_csv(r"C:\Users\nicol\Desktop\Ed_Krueger\eco395m_ml_final\data\train_data.csv")
+test_df = pd.read_csv(r"C:\Users\nicol\Desktop\Ed_Krueger\eco395m_ml_final\data\test_data.csv", sep=";")
 
 train_texts = train_df["text"].tolist()
-train_labels = train_df["label"].astype(int).to_numpy()
+train_labels = train_df["label"].tolist()
 test_texts = test_df["comment"].tolist()
-test_labels = test_df["isHate"].astype(int).to_numpy()
+test_labels = test_df["isHate"].tolist()
 
-print("generating embeddings...")
-if use_hatebert:
-    word_model = models.Transformer("GroNLP/hateBERT")
-    pooling_model = models.Pooling(word_model.get_word_embedding_dimension())
-    embedder = SentenceTransformer(modules=[word_model, pooling_model])
-else:
-    embedder = SentenceTransformer("all-MiniLM-L6-v2")
+model = RidgeHateBERT(
+    threshold=0.25,
+    use_hatebert=True,
+    precomputed=True,
+    penalty="l2",
+    solver="lbfgs"
+)
 
-X_train = embedder.encode(train_texts, show_progress_bar=True, convert_to_numpy=True)
-X_test = embedder.encode(test_texts, show_progress_bar=True, convert_to_numpy=True)
-
-print("applying PCA...")
+X_train = model.get_embeddings(train_texts)
+X_test = model.get_embeddings(test_texts)
 pca = PCA(n_components=50)
 X_train_reduced = pca.fit_transform(X_train)
 X_test_reduced = pca.transform(X_test)
 
-print("training ridge classifier...")
-clf = LogisticRegression(
-    penalty=penalty,
-    C=1.0,
-    solver=solver,
-    max_iter=1000,
-    random_state=42
+model.fit(X_train_reduced, train_labels)
+
+test_labels_bin = np.array(test_labels).astype(int)
+probs = model.predict_proba(X_test_reduced)[:, 1]
+custom_preds = (probs >= 0.25).astype(int)
+
+print(classification_report(test_labels_bin, custom_preds))
+
+model.plot_confusion_matrix(
+    test_labels_bin, custom_preds,
+    save_path="images/ridge_hatebert_confusion_matrix.jpg"
 )
-clf.fit(X_train_reduced, train_labels)
 
-probs = clf.predict_proba(X_test_reduced)[:, 1]
-preds = (probs >= threshold).astype(int)
-
-print("\n" + classification_report(test_labels, preds))
-
-cm = confusion_matrix(test_labels, preds)
-sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
-            xticklabels=["Not Hate", "Hate"],
-            yticklabels=["Not Hate", "Hate"])
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.title("Confusion Matrix - Ridge HateBERT")
-plt.tight_layout()
-plt.savefig(f"{output_dir}/ridge_hatebert_confusion_matrix.jpg")
-plt.close()
-
-fpr, tpr, _ = roc_curve(test_labels, probs)
-auc = roc_auc_score(test_labels, probs)
-plt.figure(figsize=(8, 6))
-plt.plot(fpr, tpr, label=f"ROC Curve (AUC = {auc:.2f})", linewidth=2)
-plt.plot([0, 1], [0, 1], 'k--')
-plt.xlabel("False Positive Rate")
-plt.ylabel("True Positive Rate")
-plt.title("ROC Curve - Ridge HateBERT")
-plt.legend(loc="lower right")
-plt.grid(True)
-plt.tight_layout()
-plt.savefig(f"{output_dir}/ridge_hatebert_roc_curve.jpg")
-plt.close()
+model.plot_roc_curve(
+    X_test_reduced, test_labels_bin,
+    save_path="images/ridge_hatebert_roc_curve.jpg"
+)
