@@ -20,11 +20,11 @@ from transformers import AutoTokenizer, AutoModel
 class HateSpeechXGBClassifier:
     def __init__(
         self,
-        threshold: float = 0.75,
+        threshold: float = 0.25,
         n_estimators: int = 100,
         max_depth: int = 6,
         learning_rate: float = 0.3,
-        bert_model_name: str = "Hate-speech-CNERG/bert-base-uncased-hatexplain",
+        bert_model_name: str = "GroNLP/hateBERT",
         max_length: int = 128,
         batch_size: int = 32
     ):
@@ -68,7 +68,7 @@ class HateSpeechXGBClassifier:
             all_embeddings.append(embeddings)
         return np.vstack(all_embeddings)
 
-    def train(self, X: pd.Series, y: pd.Series) -> None:
+    def fit(self, X: pd.Series, y: pd.Series) -> None:
         X_embed = self.embed(X)
         self.model.fit(X_embed, y)
 
