@@ -112,46 +112,40 @@ class KNNHateSpeechClassifier(BaseEstimator, ClassifierMixin):
 
 
 class LogisticHateSpeech(BaseEstimator, ClassifierMixin):
-    """
-    Scikit-learn compatible Logistic Regression-based hate speech classifier using sentence-transformer embeddings.
-
-    Args:
-        threshold (float): Probability threshold for binary classification.
-        model_name (str): SentenceTransformer model to use.
-        penalty (str): Penalty type for logistic regression ('l1', 'l2', or 'none').
-        C (float): Inverse regularization strength.
-        max_iter (int): Maximum iterations for solver.
-        precomputed (bool): Whether input to fit/predict is already embedded.
-    """
     def __init__(self, threshold=0.25, model_name="all-MiniLM-L6-v2",
-                 penalty='l2', C=1.0, max_iter=1000, precomputed=False):
+                 penalty='none', C=1.0, max_iter=1000, solver='lbfgs', precomputed=False):
         self.threshold = threshold
         self.model_name = model_name
         self.penalty = penalty
         self.C = C
         self.max_iter = max_iter
+        self.solver = solver
         self.precomputed = precomputed
 
         self.embedder = SentenceTransformer(model_name)
         self.scaler = StandardScaler()
-        self.model = LogisticRegression(penalty=None, C=self.C, max_iter=self.max_iter)
+        self.model_ = None  
 
     def fit(self, X, y):
         if self.precomputed:
             X_scaled = self.scaler.fit_transform(X)
         else:
-            X_emb = self.get_embeddings(X, scale=True)
-            X_scaled = X_emb
-        self.model.fit(X_scaled, y)
+            X_scaled = self.get_embeddings(X, scale=True)
+        self.model_ = LogisticRegression(
+            penalty=self.penalty,
+            C=self.C,
+            max_iter=self.max_iter,
+            solver=self.solver
+        )
+        self.model_.fit(X_scaled, y)
         return self
 
     def predict_proba(self, X):
         if self.precomputed:
             X_scaled = self.scaler.transform(X)
         else:
-            X_emb = self.get_embeddings(X, scale=True)
-            X_scaled = X_emb
-        return self.model.predict_proba(X_scaled)
+            X_scaled = self.get_embeddings(X, scale=True)
+        return self.model_.predict_proba(X_scaled)
 
     def predict(self, X):
         probs = self.predict_proba(X)[:, 1]
@@ -167,46 +161,42 @@ class LogisticHateSpeech(BaseEstimator, ClassifierMixin):
         return self.scaler.fit_transform(embeddings) if scale else embeddings
 
 
-
 class RidgeHateSpeechClassifier(BaseEstimator, ClassifierMixin):
     """
-    Scikit-learn compatible Ridge Logistic Regression-based hate speech classifier using sentence-transformer embeddings.
-
-    Args:
-        threshold (float): Probability threshold for binary classification.
-        model_name (str): SentenceTransformer model to use.
-        C (float): Inverse regularization strength.
-        max_iter (int): Maximum iterations for solver.
-        precomputed (bool): Whether input to fit/predict is already embedded.
+    Scikit-learn compatible Ridge Logistic Regression-based hate speech classifier
+    using sentence-transformer embeddings.
     """
+
     def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
-                 C=1.0, max_iter=1000, precomputed=False):
+                 C=1.0, max_iter=1000, solver='lbfgs', precomputed=False):
         self.threshold = threshold
         self.model_name = model_name
         self.C = C
         self.max_iter = max_iter
+        self.solver = solver
         self.precomputed = precomputed
 
         self.embedder = SentenceTransformer(model_name)
         self.scaler = StandardScaler()
-        self.model = LogisticRegression(penalty='l2', C=self.C, max_iter=self.max_iter)
+        self.model_ = None  # model is initialized during fit
 
     def fit(self, X, y):
         if self.precomputed:
             X_scaled = self.scaler.fit_transform(X)
         else:
-            X_emb = self.get_embeddings(X, scale=True)
-            X_scaled = X_emb
-        self.model.fit(X_scaled, y)
+            X_scaled = self.get_embeddings(X, scale=True)
+        self.model_ = LogisticRegression(
+            penalty='l2', C=self.C, max_iter=self.max_iter, solver=self.solver
+        )
+        self.model_.fit(X_scaled, y)
         return self
 
     def predict_proba(self, X):
         if self.precomputed:
             X_scaled = self.scaler.transform(X)
         else:
-            X_emb = self.get_embeddings(X, scale=True)
-            X_scaled = X_emb
-        return self.model.predict_proba(X_scaled)
+            X_scaled = self.get_embeddings(X, scale=True)
+        return self.model_.predict_proba(X_scaled)
 
     def predict(self, X):
         probs = self.predict_proba(X)[:, 1]
@@ -223,43 +213,40 @@ class RidgeHateSpeechClassifier(BaseEstimator, ClassifierMixin):
     
 class LassoHateSpeechClassifier(BaseEstimator, ClassifierMixin):
     """
-    Scikit-learn compatible Lasso Logistic Regression-based hate speech classifier using sentence-transformer embeddings.
-
-    Args:
-        threshold (float): Probability threshold for binary classification.
-        model_name (str): SentenceTransformer model to use.
-        C (float): Inverse regularization strength.
-        max_iter (int): Maximum iterations for solver.
-        precomputed (bool): Whether input to fit/predict is already embedded.
+    Scikit-learn compatible Lasso Logistic Regression-based hate speech classifier 
+    using sentence-transformer embeddings.
     """
+
     def __init__(self, threshold=0.25, model_name='all-MiniLM-L6-v2',
-                 C=1.0, max_iter=1000, precomputed=False):
+                 C=1.0, max_iter=1000, solver='liblinear', precomputed=False):
         self.threshold = threshold
         self.model_name = model_name
         self.C = C
         self.max_iter = max_iter
+        self.solver = solver
         self.precomputed = precomputed
 
         self.embedder = SentenceTransformer(model_name)
         self.scaler = StandardScaler()
-        self.model = LogisticRegression(penalty='l1', solver='liblinear', C=self.C, max_iter=self.max_iter)
+        self.model_ = None  # Will be created in fit()
 
     def fit(self, X, y):
         if self.precomputed:
             X_scaled = self.scaler.fit_transform(X)
         else:
-            X_emb = self.get_embeddings(X, scale=True)
-            X_scaled = X_emb
-        self.model.fit(X_scaled, y)
+            X_scaled = self.get_embeddings(X, scale=True)
+        self.model_ = LogisticRegression(
+            penalty='l1', solver=self.solver, C=self.C, max_iter=self.max_iter
+        )
+        self.model_.fit(X_scaled, y)
         return self
 
     def predict_proba(self, X):
         if self.precomputed:
             X_scaled = self.scaler.transform(X)
         else:
-            X_emb = self.get_embeddings(X, scale=True)
-            X_scaled = X_emb
-        return self.model.predict_proba(X_scaled)
+            X_scaled = self.get_embeddings(X, scale=True)
+        return self.model_.predict_proba(X_scaled)
 
     def predict(self, X):
         probs = self.predict_proba(X)[:, 1]
@@ -335,10 +322,21 @@ class NBHateSpeechClassifier(BaseEstimator, ClassifierMixin):
         print(mismatches[(y_true == 1) & (y_pred == 0)].head(5).to_string(index=False))
 
 
-class HateSpeechRFClassifier:
-    def __init__(self, threshold: float = 0.75, n_estimators: int = 100, max_depth: int = None, class_weight=None):
+from sklearn.base import BaseEstimator, ClassifierMixin
+
+class HateSpeechRFClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, threshold=0.75, model_name="all-MiniLM-L6-v2",
+                 n_estimators=100, max_depth=None, class_weight=None,
+                 precomputed=False):
         self.threshold = threshold
-        self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
+        self.model_name = model_name
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.class_weight = class_weight
+        self.precomputed = precomputed
+
+        self.embedder = SentenceTransformer(model_name)
+        self.scaler = StandardScaler()
         self.model = RandomForestClassifier(
             n_estimators=n_estimators,
             max_depth=max_depth,
@@ -346,47 +344,43 @@ class HateSpeechRFClassifier:
             random_state=42
         )
 
-    def embed(self, texts: pd.Series) -> np.ndarray:
-        return self.encoder.encode(texts.tolist(), show_progress_bar=False)
+    def fit(self, X, y):
+        if self.precomputed:
+            X_scaled = self.scaler.fit_transform(X)
+        else:
+            X_scaled = self.scaler.fit_transform(self.embedder.encode(X, show_progress_bar=False))
+        self.model.fit(X_scaled, y)
+        return self
 
-    def train(self, X: pd.Series, y: pd.Series) -> None:
-        X_embed = self.embed(X)
-        self.model.fit(X_embed, y)
+    def predict_proba(self, X):
+        if self.precomputed:
+            X_scaled = self.scaler.transform(X)
+        else:
+            X_scaled = self.scaler.transform(self.embedder.encode(X, show_progress_bar=False))
+        return self.model.predict_proba(X_scaled)
 
-    def predict_proba(self, X: pd.Series) -> pd.Series:
-        X_embed = self.embed(X)
-        proba = self.model.predict_proba(X_embed)[:, 1]
-        return pd.Series(proba, index=X.index)
+    def predict(self, X):
+        probs = self.predict_proba(X)[:, 1]
+        return (probs > self.threshold).astype(int)
 
-    def predict(self, X: pd.Series) -> pd.Series:
-        proba = self.predict_proba(X)
-        return (proba > self.threshold).astype(int)
+    def score(self, X, y):
+        return np.mean(self.predict(X) == np.array(y))
 
-    def evaluate(self, X_test: pd.Series, y_test: pd.Series) -> None:
-        y_pred = self.predict(X_test)
-        print(classification_report(y_test, y_pred))
 
-    def plot_confusion_matrix(self, y_true, y_pred):
-        cm = confusion_matrix(y_true, y_pred)
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Not Hate", "Hate"], yticklabels=["Not Hate", "Hate"])
-        plt.xlabel("Predicted")
-        plt.ylabel("Actual")
-        plt.title("Confusion Matrix")
-        plt.show()
 
-    def show_misclassifications(self, X: pd.Series, y_true: pd.Series, y_pred: pd.Series):
-        mismatches = X[(y_true != y_pred)]
-        print("\nFALSE POSITIVES:")
-        print(mismatches[(y_true == 0) & (y_pred == 1)].head(5).to_string(index=False))
-
-        print("\nFALSE NEGATIVES:")
-        print(mismatches[(y_true == 1) & (y_pred == 0)].head(5).to_string(index=False))
-
-    
-class HateSpeechXGBClassifier:
-    def __init__(self, threshold: float = 0.75, n_estimators: int = 100, max_depth: int = 6, learning_rate: float = 0.3):
+class HateSpeechXGBClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, threshold=0.75, model_name="all-MiniLM-L6-v2",
+                 n_estimators=100, max_depth=6, learning_rate=0.3,
+                 precomputed=False):
         self.threshold = threshold
-        self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
+        self.model_name = model_name
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.learning_rate = learning_rate
+        self.precomputed = precomputed
+
+        self.embedder = SentenceTransformer(model_name)
+        self.scaler = StandardScaler()
         self.model = XGBClassifier(
             n_estimators=n_estimators,
             max_depth=max_depth,
@@ -395,38 +389,24 @@ class HateSpeechXGBClassifier:
             eval_metric='logloss'
         )
 
-    def embed(self, texts: pd.Series) -> np.ndarray:
-        return self.encoder.encode(texts.tolist(), show_progress_bar=False)
+    def fit(self, X, y):
+        if self.precomputed:
+            X_scaled = self.scaler.fit_transform(X)
+        else:
+            X_scaled = self.scaler.fit_transform(self.embedder.encode(X, show_progress_bar=False))
+        self.model.fit(X_scaled, y)
+        return self
 
-    def train(self, X: pd.Series, y: pd.Series) -> None:
-        X_embed = self.embed(X)
-        self.model.fit(X_embed, y)
+    def predict_proba(self, X):
+        if self.precomputed:
+            X_scaled = self.scaler.transform(X)
+        else:
+            X_scaled = self.scaler.transform(self.embedder.encode(X, show_progress_bar=False))
+        return self.model.predict_proba(X_scaled)
 
-    def predict_proba(self, X: pd.Series) -> pd.Series:
-        X_embed = self.embed(X)
-        proba = self.model.predict_proba(X_embed)[:, 1]
-        return pd.Series(proba, index=X.index)
+    def predict(self, X):
+        probs = self.predict_proba(X)[:, 1]
+        return (probs > self.threshold).astype(int)
 
-    def predict(self, X: pd.Series) -> pd.Series:
-        proba = self.predict_proba(X)
-        return (proba > self.threshold).astype(int)
-
-    def evaluate(self, X_test: pd.Series, y_test: pd.Series) -> None:
-        y_pred = self.predict(X_test)
-        print(classification_report(y_test, y_pred))
-
-    def plot_confusion_matrix(self, y_true, y_pred):
-        cm = confusion_matrix(y_true, y_pred)
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Not Hate", "Hate"], yticklabels=["Not Hate", "Hate"])
-        plt.xlabel("Predicted")
-        plt.ylabel("Actual")
-        plt.title("Confusion Matrix")
-        plt.show()
-
-    def show_misclassifications(self, X: pd.Series, y_true: pd.Series, y_pred: pd.Series):
-        mismatches = X[(y_true != y_pred)]
-        print("\nFALSE POSITIVES:")
-        print(mismatches[(y_true == 0) & (y_pred == 1)].head(5).to_string(index=False))
-
-        print("\nFALSE NEGATIVES:")
-        print(mismatches[(y_true == 1) & (y_pred == 0)].head(5).to_string(index=False))
+    def score(self, X, y):
+        return np.mean(self.predict(X) == np.array(y))
