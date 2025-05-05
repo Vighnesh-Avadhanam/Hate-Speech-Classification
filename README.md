@@ -54,6 +54,16 @@ When looking at the Precision-Recall curves for the seven models using the $hate
   <b>Left: KNN with all-MiniLM-L6-v2 Sentence Transformers; Right: KNN with hateBERT Sentence Transformers</b>
 </p>
 
+<p align="center">
+  <img src="images/xb_matrix.png" alt="XGB MiniLM" width="45%" />
+  <img src="images/xb_hatebert_matrix.png" alt="XGB hateBERT" width="45%" />
+</p>
+
+<p align="center">
+  <b>Left: XGB with all-MiniLM-L6-v2 Sentence Transformers; Right: XGB with hateBERT Sentence Transformers</b>
+</p>
+
+
 
 # Model Selection
 Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well. It seems as though adding the penalties does not affect the model's precision or recall.
