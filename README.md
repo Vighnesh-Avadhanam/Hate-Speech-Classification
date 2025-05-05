@@ -5,7 +5,7 @@ In this project, we compare the performance of various classification models in 
 Our training dataset was created by Vidgen et.al (2021), found [here](https://huggingface.co/datasets/tasksource/dynahate). This consists of over 41,000 comments that are defined as either "hate" or "not hate". The source for the test data comes from the ETHOS Hate Speech Dectection dataset, found [here](https://github.com/intelligence-csd-auth-gr/Ethos-Hate-Speech-Dataset/blob/master/ethos/ethos_data/Ethos_Dataset_Binary.csv). This dataset scrapes 998 comments from YouTube and Reddit and contains the likelihood of whether a comment is hate speech or not.
 
 # Instructions for Reproducibility
-To obtain the training data, download `hugging_face_data.py` file from the Hugging Face dataset, place into the code folder, and run the `csv_creator.py` file in the code folder. To obtain the test data, download the `Ethos_Dataset_Binary.csv` file from the attached test repository, place into the data folder, then run the `clean_data.py` code in the code folder to change the format and file name. To run the individual models, their respective codes can be ran in the code folder to obtain the necessary information on each model. This will also give their individual ROC curves, Precision-Recall curves, and confusion matrices. To get the comparative ROCs and Precision-Recall curves, we run `roc_curves.py`, `roc_curves_hatebert.py`, `pr_curves.py`, and `pr_curves_hatebert.py`.
+To obtain the training data, download `hugging_face_data.py` file from the Hugging Face dataset, place into the code folder, and run the `csv_creator.py` file in the code folder. To obtain the test data,  run the `clean_data.py` code in the code folder to change the format and file name of the raw test data. To run the individual models, their respective codes can be ran in the code folder to obtain the necessary information on each model. This will also give their individual ROC curves, Precision-Recall curves, and confusion matrices. To get the comparative ROCs and Precision-Recall curves, we run `roc_curves.py`, `roc_curves_hatebert.py`, `pr_curves.py`, and `pr_curves_hatebert.py`.
 
 # Models Used
 ## all-MiniLM-L6-v2
@@ -37,6 +37,13 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 # Model Selection
 Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well. It seems as though adding the penalties does not affect the model's precision or recall.
 
+# Special Case: DistilBERT
+We decided to run a sentence transformer without implementing a model to see how well it would run. Unlike hateBERT, DistilBERT is trained on a generalized language model, so it would have more information to run on. The final ROC curve is as follows:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/215f53b7-bed6-4091-977e-ff2fbd1c98ac" height="500"/>
+</p>
+This model exceeds all other models in its AUC, as it is not limited in its vocabulary as hateBERt is.
+
 # Data Limitations
 Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
 
@@ -47,7 +54,7 @@ Our major limitation is that we are unable to detect any possible hate speech th
 </p>
 
 <p align="center">
-  <b>KNN (MiniLM)</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>KNN (HateBERT)</b>
+  <b>Left: KKN with all-MiniLM-L6-v2 Sentence Transformers; Right: KKN with hateBERT Sentence Transformers</b>
 </p>
 
 A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. We also do not stack models due to the computation time for the attempts we had on creating.
