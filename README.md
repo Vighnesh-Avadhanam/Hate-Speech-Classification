@@ -38,12 +38,12 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 Due to its performance on the ROC and Precision-Recall curves for both sentence transformers, the logistic-based models all equally do well. It seems as though adding the penalties does not affect the model's precision or recall.
 
 # Special Case: DistilBERT
-We decided to run a sentence transformer without implementing a model to see how well it would run. Unlike hateBERT, DistilBERT (Sanh et.al (2020)) is trained on a generalized language model, so it would have more information to run on. The final ROC curve is as follows:
+We decided to run a sentence transformer without implementing a model to see how well it would run. Unlike hateBERT, DistilBERT (Sanh et.al (2020)) is trained on a generalized language model, so it would have more information to run on. The final ROC curve and confusion matrix is as follows:
 <p align="center">
   <img src="https://github.com/user-attachments/assets/215f53b7-bed6-4091-977e-ff2fbd1c98ac" height="500"/>
   <img src="https://github.com/user-attachments/assets/6c15f865-135d-4306-966e-a75893788c2f" height="500"/>
 </p>
-This model exceeds all other models in its AUC, as it is not limited in its vocabulary as hateBERt is.
+This model exceeds all other models in its AUC, as it is not limited in its vocabulary as hateBERT is.
 
 # Data Limitations
 Our major limitation is that we are unable to detect any possible hate speech that contains sarcasm, as our models are not specifically trained on that. Furthermore, we are unable to capture the full context of the comment. For example, we may have replies for a certain tweet but may not necessarily have information of the tweet itself so that context is ignored. Similarly, much of the hate speech online nowadays is heavily coded and abstract to the point where the data we tested on would not be able to pick up on the subtleties that could be found.
@@ -55,14 +55,14 @@ Our major limitation is that we are unable to detect any possible hate speech th
 </p>
 
 <p align="center">
-  <b>Left: KKN with all-MiniLM-L6-v2 Sentence Transformers; Right: KKN with hateBERT Sentence Transformers</b>
+  <b>Left: KNN with all-MiniLM-L6-v2 Sentence Transformers; Right: KNN with hateBERT Sentence Transformers</b>
 </p>
 
-A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. We also do not stack models due to the computation time for the attempts we had on creating.
+A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. The Hate BERT models specifically tend to hava a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to Hate BERT being trained on a large dataset of extreme hate speech. In an attempt to speed up runtime, we use methods like `PCA` and `HalvingGridSearchCV`, so that could drive some of our results.
 
 # Declaration of Work
 ## Ben
-* Built the Gaussian Naive Bayes model, the Gaussian Hatebert model, the DistilBERT model, and the Simple Neural Network model
+* Built the Gaussian Naive Bayes model, the Gaussian hateBERT model, the DistilBERT model, and the Simple Neural Network model (unused)
 * Froze the DistilBERT model to make it accessible for more convenient use with other models
   
 ## Chris
