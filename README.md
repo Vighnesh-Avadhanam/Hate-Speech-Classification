@@ -73,8 +73,8 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 </p>
 
 <p align="center">
-  <img src="images/xb_matrix.png" alt="XGB MiniLM" height="300" style="margin-right: 10px;" />
-  <img src="images/xb_hatebert_matrix.png" alt="XGB hateBERT" height="300" />
+  <img src="images/xb_matrix.png" alt="XGB MiniLM" height="300" width="400" style="margin-right: 10px;" />
+  <img src="images/xb_hatebert_matrix.png" alt="XGB hateBERT" height="300" width="400" />
 </p>
 
 <p align="center">
@@ -91,8 +91,8 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 </p>
 
 <p align="center">
-  <img src="images/gnb_matrix.png" alt="RF MiniLM" height="300" style="margin-right: 10px;" />
-  <img src="images/gnb_hatebert_matrix.png" alt="RF hateBERT" height="300" />
+  <img src="images/gnb_matrix.png" alt="RF MiniLM" height="300" width="400" style="margin-right: 10px;" />
+  <img src="images/gnb_hatebert_matrix.png" alt="RF hateBERT" height="300" width="400" />
 </p>
 
 <p align="center">
@@ -109,23 +109,14 @@ Due to its performance on the ROC and Precision-Recall curves for both sentence 
 # Special Case: DistilBERT
 We decided to run a sentence transformer without implementing a model to see how well it would run. Unlike hateBERT, DistilBERT (Sanh et.al (2020)) is trained on a generalized language model, so it would have more information to run on. The final ROC curve and confusion matrix is as follows:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/215f53b7-bed6-4091-977e-ff2fbd1c98ac" height="600"/>
-  <img src="https://github.com/user-attachments/assets/6c15f865-135d-4306-966e-a75893788c2f" height="550"/>
+  <img src="https://github.com/user-attachments/assets/215f53b7-bed6-4091-977e-ff2fbd1c98ac" height="500"/>
+  <img src="https://github.com/user-attachments/assets/6c15f865-135d-4306-966e-a75893788c2f" height="450"/>
 </p>
 This model exceeds all other models in its AUC, as it is not limited in its vocabulary as hateBERT is.
 
 # Limitations and Extensions
 A major limitation for the models is the computation time, as some of these models run for at least 20 minutes to obtain output. In an attempt to speed up runtime, we use methods like `PCA` and
-`HalvingGridSearchCV`, so that itself could be driving some of our results. 
-
-<p align="center">
-  <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" height="300" style="margin-right: 20px;" />
-  <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" height="300" />
-</p>
-
-<p align="center">
-  <b>Left: KNN with all-MiniLM-L6-v2 Sentence Transformers; Right: KNN with hateBERT Sentence Transformers</b>
-</p>
+`HalvingGridSearchCV`, so that itself could be driving some of our results.
 
 The above images plot the confusion matrices for the KNN Model with the hateBERT and $all-MiniLM-L6-v2$ sentence transforms. Specifically hateBERT tends to have a higher rate of false positive, where it marks 'Hate' for phrases that are not. This is likely due to hateBERT being trained on a large dataset of extreme hate speech from banned communities in Reddit.
 
