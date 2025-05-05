@@ -55,6 +55,15 @@ When looking at the Precision-Recall curves for the seven models using the $hate
 </p>
 
 <p align="center">
+  <img src="images/lasso_matrix.jpg" alt="Lasso MiniLM" height="300" style="margin-right: 10px;" />
+  <img src="images/lasso_hate_bert_matrix.jpg" alt="Lasso hateBERT" height="300" />
+</p>
+
+<p align="center">
+  <b>Left: Lasso with all-MiniLM-L6-v2 Sentence Transformers; Right: Lasso with hateBERT Sentence Transformers</b>
+</p>
+
+<p align="center">
   <img src="images/knn_minilm_matrix.png" alt="KNN MiniLM" height="300" style="margin-right: 10px;" />
   <img src="images/knn_hatebert_matrix.png" alt="KNN hateBERT" height="300" />
 </p>
